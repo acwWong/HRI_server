@@ -10,7 +10,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def delete_existing_files(directory):
-    # 删除指定目录下的所有文件
+    # 删除所有文件
     for filename in os.listdir(directory):
         file_path = os.path.join(directory, filename)
         try:
@@ -22,7 +22,6 @@ def delete_existing_files(directory):
 
 @app.route('/uploadResult', methods=['POST'])
 def receive_data():
-    # 在处理新的上传前，删除之前的所有文件
     delete_existing_files(app.config['UPLOAD_FOLDER'])
 
 
