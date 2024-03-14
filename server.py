@@ -10,7 +10,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def delete_existing_files(directory):
-    # 删除所有文件
     for filename in os.listdir(directory):
         file_path = os.path.join(directory, filename)
         try:
@@ -24,10 +23,8 @@ def delete_existing_files(directory):
 def receive_data():
     delete_existing_files(app.config['UPLOAD_FOLDER'])
 
-
     objectImage = request.files.get('objectImage')
     actionImage = request.files.get('actionImage')
-
     objectName = request.form.get('objectName')
     actionName = request.form.get('actionName')
     objectAccuracy = request.form.get('objectAccuracy')
