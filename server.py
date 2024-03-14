@@ -30,10 +30,11 @@ def receive_data():
 
     objectName = request.form.get('objectName')
     actionName = request.form.get('actionName')
-    accuracy = request.form.get('accuracy')
+    objectAccuracy = request.form.get('objectAccuracy')
+    actionAccuracy = request.form.get('actionAccuracy')
     timestamp = request.form.get('timestamp')
 
-    if not all([objectImage, actionImage, objectName, actionName, accuracy, timestamp]):
+    if not all([objectImage, actionImage, objectName, actionName, objectAccuracy, actionAccuracy, timestamp]):
         return jsonify({"message": "Missing data"}), 400
 
 
@@ -43,7 +44,8 @@ def receive_data():
     actionImage.save(os.path.join(app.config['UPLOAD_FOLDER'], filename2))
 
     try:
-        accuracy = float(accuracy)
+        objectAccuracy = float(objectAccuracy)
+        actionAccuracy = float(actionAccuracy)
     except ValueError:
         return jsonify({"message": "Invalid accuracy value"}), 400
     return jsonify({"message": "Data received and processed."}), 200

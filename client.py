@@ -8,10 +8,13 @@ files = {
     'actionImage': open('img_1.png', 'rb')
 }
 
+print(type(open('img.png', 'rb')))
+
 data = {
     'objectName': 'Name One',
     'actionName': 'Name Two',
-    'accuracy': 98.7,
+    'objectAccuracy': 98.7,
+    'actionAccuracy': 96.9,
     'timestamp': datetime.now().strftime('%y%m%d%H%M%S')
 }
 
