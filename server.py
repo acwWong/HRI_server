@@ -35,10 +35,10 @@ def receive_data():
         return jsonify({"message": "Missing data"}), 400
 
 
-    filename1 = secure_filename(objectImage.filename)
-    objectImage.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
-    filename2 = secure_filename(actionImage.filename)
-    actionImage.save(os.path.join(app.config['UPLOAD_FOLDER'], filename2))
+    objectImage = secure_filename(objectImage.filename)
+    objectImage.save(os.path.join(app.config['UPLOAD_FOLDER'], objectImage))
+    actionImage = secure_filename(actionImage.filename)
+    actionImage.save(os.path.join(app.config['UPLOAD_FOLDER'], actionImage))
 
     try:
         objectAccuracy = float(objectAccuracy)
