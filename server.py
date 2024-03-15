@@ -35,16 +35,17 @@ def receive_data():
         return jsonify({"message": "Missing data"}), 400
 
 
-    objectImage = secure_filename(objectImage.filename)
-    objectImage.save(os.path.join(app.config['UPLOAD_FOLDER'], objectImage))
-    actionImage = secure_filename(actionImage.filename)
-    actionImage.save(os.path.join(app.config['UPLOAD_FOLDER'], actionImage))
+    objectImageName = secure_filename(objectImage.filename)
+    objectImage.save(os.path.join(app.config['UPLOAD_FOLDER'], objectImageName))
+    actionImageName = secure_filename(actionImage.filename)
+    actionImage.save(os.path.join(app.config['UPLOAD_FOLDER'], actionImageName))
 
     try:
         objectAccuracy = float(objectAccuracy)
         actionAccuracy = float(actionAccuracy)
     except ValueError:
         return jsonify({"message": "Invalid accuracy value"}), 400
+
     return jsonify({"message": "Data received and processed."}), 200
 
 
