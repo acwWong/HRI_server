@@ -1,3 +1,5 @@
+import uuid
+
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 import os
@@ -6,6 +8,8 @@ app = Flask(__name__)
 
 UPLOAD_FOLDER = 'images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 限制为16MB
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -18,6 +22,14 @@ def delete_existing_files(directory):
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def unique_filename(original_filename):
+    ext = original_filename.rsplit('.', 1)[1].lower() if '.' in original_filename else ''
+    unique_name = f"{uuid.uuid4()}.{ext}"
+    return unique_name
 
 @app.route('/uploadResult', methods=['POST'])
 def receive_data():
@@ -34,15 +46,21 @@ def receive_data():
     if not all([objectImage, actionImage, objectName, actionName, objectAccuracy, actionAccuracy, timestamp]):
         return jsonify({"message": "Missing data"}), 400
 
+    if objectImage and allowed_file(objectImage.filename):
+        objectImageName = secure_filename(objectImage.filename)
+        objectImage.save(os.path.join(app.config['UPLOAD_FOLDER'], objectImageName))
+    else:
+        return jsonify({"message": "Invalid object image"}), 400
 
-    objectImageName = secure_filename(objectImage.filename)
-    objectImage.save(os.path.join(app.config['UPLOAD_FOLDER'], objectImageName))
-    actionImageName = secure_filename(actionImage.filename)
-    actionImage.save(os.path.join(app.config['UPLOAD_FOLDER'], actionImageName))
+    if actionImage and allowed_file(actionImage.filename):
+        actionImageName = secure_filename(actionImage.filename)
+        actionImage.save(os.path.join(app.config['UPLOAD_FOLDER'], actionImageName))
+    else:
+        return jsonify({"message": "Invalid action image"}), 400
 
     try:
-        objectAccuracy = float(objectAccuracy)
-        actionAccuracy = float(actionAccuracy)
+        float(objectAccuracy)
+        float(actionAccuracy)
     except ValueError:
         return jsonify({"message": "Invalid accuracy value"}), 400
 
