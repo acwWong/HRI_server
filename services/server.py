@@ -13,6 +13,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+data = {}
 def delete_existing_files(directory):
     for filename in os.listdir(directory):
         file_path = os.path.join(directory, filename)
@@ -26,24 +27,18 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def unique_filename(original_filename):
-    ext = original_filename.rsplit('.', 1)[1].lower() if '.' in original_filename else ''
-    unique_name = f"{uuid.uuid4()}.{ext}"
-    return unique_name
-
 @app.route('/uploadResult', methods=['POST'])
 def receive_data():
     delete_existing_files(app.config['UPLOAD_FOLDER'])
 
     objectImage = request.files.get('objectImage')
-    actionImage = request.files.get('actionImage')
     objectName = request.form.get('objectName')
     actionName = request.form.get('actionName')
     objectAccuracy = request.form.get('objectAccuracy')
     actionAccuracy = request.form.get('actionAccuracy')
     timestamp = request.form.get('timestamp')
 
-    if not all([objectImage, actionImage, objectName, actionName, objectAccuracy, actionAccuracy, timestamp]):
+    if not all([objectImage, objectName, actionName, objectAccuracy, actionAccuracy, timestamp]):
         return jsonify({"message": "Missing data"}), 400
 
     if objectImage and allowed_file(objectImage.filename):
@@ -52,19 +47,34 @@ def receive_data():
     else:
         return jsonify({"message": "Invalid object image"}), 400
 
-    if actionImage and allowed_file(actionImage.filename):
-        actionImageName = secure_filename(actionImage.filename)
-        actionImage.save(os.path.join(app.config['UPLOAD_FOLDER'], actionImageName))
-    else:
-        return jsonify({"message": "Invalid action image"}), 400
-
     try:
         float(objectAccuracy)
         float(actionAccuracy)
     except ValueError:
         return jsonify({"message": "Invalid accuracy value"}), 400
 
+    write_data_to_file(objectName, objectAccuracy, actionName, actionAccuracy)
+
     return jsonify({"message": "Data received and processed."}), 200
+
+def write_data_to_file(object_name, object_accuracy, action_name, action_accuracy):
+    with open('data.txt', 'w') as file:
+        file.write(f"Object Name: {object_name}\n")
+        file.write(f"Object Accuracy: {object_accuracy}\n")
+        file.write(f"Action Name: {action_name}\n")
+        file.write(f"Action Accuracy: {action_accuracy}\n")
+
+def get_data():
+    data = {}
+    try:
+        with open('data.txt', 'r') as file:
+            for line in file:
+                key, value = line.strip().split(': ')
+                data[key.strip()] = value.strip()
+    except FileNotFoundError:
+        pass
+
+    return data
 
 
 if __name__ == '__main__':
