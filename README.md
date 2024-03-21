@@ -1,4 +1,4 @@
-Python run server.py
+Python run server.py -> client.py -> ui.py
 
 Client.py is a simple test case
 
