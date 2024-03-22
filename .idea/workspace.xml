@@ -5,14 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="28c33dfc-ac20-4d09-84f6-46488fefc312" name="Changes" comment="test">
-      <change afterPath="$PROJECT_DIR$/resources/img_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/img_3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/img_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/client.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,9 +174,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.server" />
-        <item itemvalue="Python.client" />
         <item itemvalue="Python.ui" />
+        <item itemvalue="Python.client" />
+        <item itemvalue="Python.server" />
         <item itemvalue="Python.app" />
         <item itemvalue="Python.HRI_demo" />
       </list>

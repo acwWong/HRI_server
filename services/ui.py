@@ -70,13 +70,6 @@ class ImageViewer(QWidget):
         dataContainer2Layout = QVBoxLayout()
         rightLayout.addWidget(dataContainer2)
 
-        # 创建两个数据标签
-        # self.dataLabels2 = [QLabel(f"Data {i + 1}: [Value]") for i in range(2)]
-        # for label in self.dataLabels2:
-        #     dataContainer2Layout.addWidget(label)
-        #
-        # dataContainer2.setLayout(dataContainer2Layout)
-
         self.gestureLabel = QLabel("Gesture Name: 92.8")
         self.accuracyLabel = QLabel("Accuracy: 99.3")
         dataContainer2Layout.addWidget(self.gestureLabel)
@@ -128,7 +121,6 @@ class ImageViewer(QWidget):
             random_image_path = random.choice(images)
             self.imageLabel2.setPixmap(QPixmap(os.path.join(resource_folder, random_image_path)).scaled(400, 300, Qt.KeepAspectRatio))
 
-        # 生成两个随机数字，用于更新右侧布局中的标签内容
         # 生成两个随机数字，用于更新右侧布局中的标签内容
         random_numbers = round(random.uniform(90, 100), 1)
         self.gestureLabel.setText(f"Gesture Name: {random_numbers + 2}")

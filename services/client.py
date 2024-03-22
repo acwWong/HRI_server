@@ -1,3 +1,4 @@
+import os
 import random
 import time
 import requests
@@ -5,21 +6,13 @@ from datetime import datetime
 
 url = 'http://127.0.0.1:3000/uploadResult'
 
+# 获取 resources 文件夹路径
+resource_folder = 'resources'
 
-
-# print(type(open('img.png', 'rb')))
-
-# data = {
-#     'objectName': 'Name One',
-#     'actionName': 'Name Two',
-#     'objectAccuracy': 98.7,
-#     'actionAccuracy': 96.9,
-#     'timestamp': datetime.now().strftime('%y%m%d%H%M%S')
-# }
-
-
-# response = requests.post(url, files=files, data=data)
-
+# 获取 resources 文件夹中所有图片文件的路径列表
+image_files = [os.path.join(resource_folder, img) for img in os.listdir(resource_folder)
+               if os.path.isfile(os.path.join(resource_folder, img))
+               and img.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
 
 while True:
 
@@ -31,13 +24,12 @@ while True:
         'timestamp': datetime.now().strftime('%y%m%d%H%M%S')
     }
 
-    print(data)
-
+    # 随机选择一个图片文件路径
+    random_image_path = random.choice(image_files)
 
     files = {
-        'objectImage': open('img_3.png', 'rb')
+        'objectImage': open(random_image_path, 'rb')
     }
-
 
     response = requests.post(url, files=files, data=data)
     if response.status_code == 200:
